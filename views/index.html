@@ -48,9 +48,9 @@
       <!-- end navbar -->
       
     <div class="container-fluid text-center p-3" style="background-color: #dfe2e7;">
-        <div class="row border mx-4 my-4 border-1 shadow rounded pt-3 pe-4 pb-5 ps-3 mt-3 bg-light" style="box-shadow: 1px grey; border-radius: 10px;">
+        <div class="row border justify-content-evenly border-1 shadow rounded bg-light m-3" style="box-shadow: 1px grey; border-radius: 10px;">
             <div class="col-sm-8">
-                <h1 class="text-center fw-bolder">Hi, Welcome to my hut!</h1>
+                <h1 class="text-center fw-bolder mt-3">Hi, Welcome to my hut!</h1>
                 <p style="text-align: justify; margin: 30px 0px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus assumenda rem commodi eveniet exercitationem, reprehenderit atque numquam consequuntur dignissimos rerum voluptatum ipsum! Ipsa, ipsum repellendus aspernatur ratione consequuntur natus placeat!Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus assumenda rem commodi eveniet exercitationem, reprehenderit atque numquam consequuntur dignissimos rerum voluptatum ipsum! Ipsa, ipsum repellendus aspernatur ratione consequuntur natus placeat!</p>
                 <div class="text-start mb-5">
                     <a href="/contactMe" id="contact" class="rounded px-3 py-0 text-decoration-none btn btn-dark">contact</a>
@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-4 card pt-0 pb-2 px-0 my-3 ms-4" 
+            <div class="col-sm-4 card pt-0 pb-2 px-0 my-3" 
             style="width: 15rem;
             border-radius: 10px;
             background-color:#fcfcfc;
@@ -106,10 +106,18 @@
                   </div>
 
                   <!-- technologies -->
-                  <div class="tech ">
-                      <i class="fa-brands fa-golang"></i>
-                      <i class="fa-brands fa-node"></i>
-                      <i class="fa-brands fa-react"></i>
+                  <div class="tech d-flex">
+                    {{range $item.Technologies}}
+                    {{if eq . "Node JS"}}
+                    <i class="fa-brands fa-node"></i>
+                    {{else if eq . "React JS"}}
+                    <i class="fa-brands fa-react"></i>
+                    {{else if eq . "Golang"}}
+                    <i class="fa-brands fa-golang"></i>
+                    {{else if eq . "Python"}}
+                    <i class="fa-brands fa-python"></i>
+                      {{end}}
+                      {{end}}
                   </div>
                   <!-- end-technologies -->
                   
@@ -119,7 +127,7 @@
                 <form action="/edit-project/{{$index}}" method="post">
                     <input type="submit" class="btn btn-dark btn-sm px-5 py-1" style="text-decoration: none; color: #dfe2e7;" value="Edit">
                 </form>
-                <form action="/delete-project/{{$index}}">
+                <form action="/delete-project/{{$index}}" method="post">
                     <input type="submit" class="btn btn-dark btn-sm px-5 py-1" style="text-decoration: none; color: #dfe2e7;" value="Delete">
                 </form>
             </div>

@@ -68,24 +68,31 @@
 
             <div>
                 <h3>Technologies</h3>
-                    <div class="left-tech">
+                <div class="left-tech">
+                        {{range .Project.Technologies}}
+                        {{if eq . "Node JS"}}
                         <i class="fa-brands fa-node"></i>
-                        </i>
                         <p>Node JS</p>
+                        {{else if eq . "React JS"}}
                         <i class="fa-brands fa-react"></i>
                         <p>React JS</p>
                     </div>
                     <div class="right-tech">
+                        {{else if eq . "Python"}}
                         <i class="fa-brands fa-python"></i>
                         <p style="padding-left: 8px;">Python</p>
+                        {{else if eq . "Golang"}}
                         <i class="fa-brands fa-golang"></i>
                         <p>Golang</p>
+                        {{end}}
+                        {{end}}
                     </div>
-            </div>
+                </div>
         </div>
-
         <div class="main">
-            <p>{{.Project.Description}}</p>
+            <p>
+                {{.Project.Description}}
+            </p>
             <p>
                 {{.Project.Description}}
             </p>

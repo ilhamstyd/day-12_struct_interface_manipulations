@@ -5,47 +5,54 @@ import (
 	"html/template"
 	"net/http"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
 
 type Project struct {
-	ProjectName string
-	StartDate   string
-	EndDate     string
-	Duration    string
-	Description string
-	Author      string
+	ProjectName  string
+	StartDate    string
+	EndDate      string
+	Duration     string
+	Description  string
+	Author       string
+	Technologies []string
 }
 
 var dataProject = []Project{
 	{
-		ProjectName: "gak punya duit rek",
-		StartDate:   "07/06/2023",
-		EndDate:     "08/06/2023",
-		Duration:    "1 hari",
-		Description: "punya duit pusing gak punya duit lebih pusing",
-		Author:      "wa doyok",
+		ProjectName:  "gak punya duit rek",
+		StartDate:    "07/06/2023",
+		EndDate:      "08/06/2023",
+		Duration:     "1 hari",
+		Description:  "punya duit pusing gak punya duit lebih pusing",
+		Author:       "wa doyok",
+		Technologies: []string{"Node JS"},
 	},
 	{
-		ProjectName: "gak punya duit rek",
-		StartDate:   "07/06/2023",
-		EndDate:     "08/06/2023",
-		Duration:    "1 hari",
-		Description: "punya duit pusing gak punya duit lebih pusing",
-		Author:      "wa bewok",
+		ProjectName:  "gak punya duit rek",
+		StartDate:    "07/06/2023",
+		EndDate:      "08/06/2023",
+		Duration:     "1 hari",
+		Description:  "punya duit pusing gak punya duit lebih pusing",
+		Author:       "wa bewok",
+		Technologies: []string{"Node JS"},
 	},
 	{
-		ProjectName: "gak punya duit rek",
-		StartDate:   "07/06/2023",
-		EndDate:     "09/06/2023",
-		Duration:    "3 hari",
-		Description: "punya duit pusing gak punya duit lebih pusing",
-		Author:      "wa kumis",
+		ProjectName:  "gak punya duit rek",
+		StartDate:    "07/06/2023",
+		EndDate:      "09/06/2023",
+		Duration:     "3 hari",
+		Description:  "punya duit pusing gak punya duit lebih pusing",
+		Author:       "wa kumis",
+		Technologies: []string{"Node JS"},
 	},
 }
 
 func main() {
+
 	e := echo.New()
 
 	e.Static("/public", "public")
@@ -96,12 +103,13 @@ func projectDetail(c echo.Context) error {
 	for index, item := range dataProject {
 		if id == index {
 			ProjectDetail = Project{
-				ProjectName: item.ProjectName,
-				StartDate:   item.StartDate,
-				EndDate:     item.EndDate,
-				Duration:    item.Duration,
-				Description: item.Description,
-				Author:      item.Author,
+				ProjectName:  item.ProjectName,
+				StartDate:    item.StartDate,
+				EndDate:      item.EndDate,
+				Duration:     item.Duration,
+				Description:  item.Description,
+				Author:       item.Author,
+				Technologies: item.Technologies,
 			}
 		}
 	}
@@ -129,22 +137,38 @@ func contactMe(c echo.Context) error {
 
 func addFormProject(c echo.Context) error {
 	projectName := c.FormValue("projectName")
-	startDate := c.FormValue("startDate")
-	endDate := c.FormValue("endDate")
+	startDateStr := c.FormValue("startDate")
+	endDateStr := c.FormValue("endDate")
 	description := c.FormValue("desc")
+	technologies := c.Request().Form["technologies"]
 
-	println("Project name : " + projectName)
-	println("start date : " + startDate)
-	println("end date : " + endDate)
-	println("description : " + description)
+	startDate, err := time.Parse("2006-01-02", startDateStr)
+	if err != nil {
+		return err
+	}
+
+	endDate, err := time.Parse("2006-01-02", endDateStr)
+	if err != nil {
+		return err
+	}
+
+	duration := int(endDate.Sub(startDate).Hours() / 24)
+
+	fmt.Println("Project name: ", projectName)
+	fmt.Println("Start date: ", startDate)
+	fmt.Println("End date: ", endDate)
+	fmt.Println("Description: ", description)
+	fmt.Println("Technologies: ", strings.Join(technologies, ", "))
+	fmt.Println("Duration: ", duration, "hari")
 
 	var newProject = Project{
-		ProjectName: projectName,
-		StartDate:   startDate,
-		EndDate:     endDate,
-		Duration:    "1 hari",
-		Description: description,
-		Author:      "ASTA",
+		ProjectName:  projectName,
+		StartDate:    startDateStr,
+		EndDate:      endDateStr,
+		Duration:     fmt.Sprintf("%d hari", duration),
+		Description:  description,
+		Author:       "ASTA",
+		Technologies: technologies,
 	}
 
 	dataProject = append(dataProject, newProject)
